@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 NEXT_EPISODE_URL = 'http://next-episode.net/'
 THE_PIRATE_BAY_URL = 'http://thepiratebay.se/search/'
 
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -17,6 +18,7 @@ def _int_formatter(number):
     if int(number) < 0:
         raise ValueError('There is no such thing as negative episode number')
     return number
+
 
 def format_series_name(series_name):
     ''' Returns series name formated properly (like asdasd-asdasd-asdasd) '''
@@ -32,7 +34,7 @@ def get_next_episode(series_name):
     html = requests.get(NEXT_EPISODE_URL + series_name).text
     parsed_obj = BeautifulSoup(html, 'html.parser')
 
-    next_episode = parsed_obj.body.find('div', id = 'next_episode')
+    next_episode = parsed_obj.body.find('div', id='next_episode')
 
     if next_episode is None:
         raise ValueError('Next episode for: "{}" not found. Maybe its over?'.format(original_name))
@@ -66,14 +68,14 @@ def actually_download(episode):
     html = requests.get(url).text
     parsed_obj = BeautifulSoup(html, 'html.parser')
 
-    results = parsed_obj.body.find('table', id = 'searchResult')
+    results = parsed_obj.body.find('table', id='searchResult')
 
     print(results.contents)
 
 
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
-        print('[usage]: python3 {} [SERIES_NAME...]'.format(sys.argv[0]))
+        print('[usage]: python {} [SERIES_NAME...]'.format(sys.argv[0]))
         sys.exit()
 
     series_list = sys.argv[1:]
